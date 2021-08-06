@@ -26,7 +26,7 @@ class MybatisPlusApplicationTests {
     }
 
     @Test
-    void test1(){
+    void test1() {
         List<User> user = userDao.selectList(null);
         String[] split = user.toString().split(",");    //分割逗号,去除逗号
         for (String s : split) {
@@ -37,7 +37,7 @@ class MybatisPlusApplicationTests {
     }
 
     @Test
-    void test2(){
+    void test2() {
         /*=====================trim()去除字符串两端的空格======================*/
         /*=====================测试String.trim()======================*/
         String str1 = "abc ";
@@ -50,26 +50,27 @@ class MybatisPlusApplicationTests {
     }
 
     // 5 2 8 1 2 19 15 14 10 9
+
     /**
-     *  @Author: chenchao
-     *  @Date: 2021/8/6 11:17
-     *  @Description: 冒泡排序算法
+     * @Author: chenchao
+     * @Date: 2021/8/6 11:17
+     * @Description: 冒泡排序算法
      */
     @Test
-    void bubbleSort(){
-        int []array = new int[10];
+    void bubbleSort() {
+        int[] array = new int[10];
         Scanner arr = new Scanner(System.in);
         System.out.println("请输入10个数据:");
         for (int i = 0; i < array.length; i++) {
             array[i] = arr.nextInt();
         }
         for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array.length-i-1; j++) {
+            for (int j = 0; j < array.length - i - 1; j++) {
                 int temp;
-                if (array[j] > array[j+1]){
+                if (array[j] > array[j + 1]) {
                     temp = array[j];
-                    array[j] = array[j+1];
-                    array[j+1] = temp;
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
                 }
             }
         }
@@ -78,14 +79,15 @@ class MybatisPlusApplicationTests {
         }
     }
     // 5 2 8 1 2 19 15 14 10 9
+
     /**
-     *  @Author: chenchao
-     *  @Date: 2021/8/6 11:36
-     *  @Description: 选择排序算法
+     * @Author: chenchao
+     * @Date: 2021/8/6 11:36
+     * @Description: 选择排序算法
      */
     @Test
-    void test(){
-        int []array = new int[10];
+    void selectSort() {
+        int[] array = new int[10];
         Scanner arr = new Scanner(System.in);
         System.out.println("请输入10个数据:");
         for (int i = 0; i < array.length; i++) {
@@ -94,7 +96,7 @@ class MybatisPlusApplicationTests {
         for (int i = 0; i < array.length; i++) {
             for (int j = i; j < array.length; j++) {
                 int temp;
-                if (array[i] > array[j]){
+                if (array[i] > array[j]) {
                     temp = array[i];
                     array[i] = array[j];
                     array[j] = temp;
@@ -102,6 +104,36 @@ class MybatisPlusApplicationTests {
             }
         }
         for (int i = 0; i < 10; i++) {
+            System.out.print(array[i] + "\t");
+        }
+    }
+    // 5 2 8 1 2 19 15 14 10 9
+
+    /**
+     * @Author: chenchao
+     * @Date: 2021/8/6 14:17
+     * @Description: 直接插入排序算法
+     */
+    @Test
+    void insertSort() {
+        int[] array = new int[10];
+        Scanner arr = new Scanner(System.in);
+        System.out.println("请输入10个数据:");
+        for (int i = 0; i < array.length; i++) {
+            array[i] = arr.nextInt();
+        }
+        int i, j, temp;
+        for (i = 1; i < array.length; i++) {
+            if (array[i] < array[i - 1]) {
+                temp = array[i];
+                array[i] = array[i - 1];
+                for (j = i - 2; j >= 0 && temp < array[j]; j--) {
+                    array[j + 1] = array[j];
+                }
+                array[j + 1] = temp;
+            }
+        }
+        for (i = 0; i < 10; i++) {
             System.out.print(array[i] + "\t");
         }
     }
