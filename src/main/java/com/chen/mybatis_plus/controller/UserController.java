@@ -1,7 +1,6 @@
 package com.chen.mybatis_plus.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chen.mybatis_plus.common.Response;
 import com.chen.mybatis_plus.model.User;
 import com.chen.mybatis_plus.service.UserService;
