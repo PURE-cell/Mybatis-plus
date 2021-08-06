@@ -1,6 +1,5 @@
 package com.chen.mybatis_plus;
 
-import cn.hutool.json.JSONUtil;
 import com.chen.mybatis_plus.dao.UserDao;
 import com.chen.mybatis_plus.model.User;
 import org.apache.commons.lang3.StringUtils;
@@ -8,13 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.lang.reflect.Array;
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Scanner;
 
 @SpringBootTest
 class MybatisPlusApplicationTests {
-    @Autowired
+    @Resource
     private UserDao userDao;
 
     @Test
