@@ -2,6 +2,7 @@ package com.chen.mybatis_plus.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chen.mybatis_plus.common.Response;
+import com.chen.mybatis_plus.dao.UserDao;
 import com.chen.mybatis_plus.model.User;
 import com.chen.mybatis_plus.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private UserDao userDao;
 
     /*=====================mybatis-plus实现增删查改======================*/
     @GetMapping("/select")
@@ -49,7 +52,10 @@ public class UserController {
 //        user.setName(name);
 //        user.setAge(Integer.parseInt(age));
 //        user.setEmail(email);
-        if (userService.insert1(user)){
+//        if (userService.insert1(user)){
+//            return new Response();
+//        }
+        if (userDao.insert(user) != 0){
             return new Response();
         }
         return new Response("更改失败!");

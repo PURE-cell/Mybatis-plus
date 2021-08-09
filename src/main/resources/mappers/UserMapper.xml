@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.chen.mybatis_plus.dao.UserDao">
     <insert id="insert1">
-        insert into user(name,age,email) values (#{user.name},#{user.age},#{user.email})
+        insert into user(name,age,email,delete_flag) values (#{user.name},#{user.age},#{user.email},#{delete_flag})
     </insert>
 
 </mapper>

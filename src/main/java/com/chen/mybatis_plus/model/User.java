@@ -17,6 +17,7 @@ public class User extends Model<User> {
     @TableField("email")
     private String email;
     @TableLogic
+    @TableField("delete_flag")
     private String delete_flag;
 
     public String getId() {
