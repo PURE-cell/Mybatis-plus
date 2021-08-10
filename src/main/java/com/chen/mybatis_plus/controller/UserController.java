@@ -1,11 +1,18 @@
 package com.chen.mybatis_plus.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chen.mybatis_plus.common.Response;
 import com.chen.mybatis_plus.dao.UserDao;
 import com.chen.mybatis_plus.model.User;
 import com.chen.mybatis_plus.service.UserService;
+import com.chen.mybatis_plus.service.impl.WebSocketServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +28,9 @@ public class UserController {
     private UserService userService;
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private WebSocketServiceImpl webSocketService;
 
     /*=====================mybatis-plus实现增删查改======================*/
     @GetMapping("/select")
@@ -56,6 +66,12 @@ public class UserController {
 //            return new Response();
 //        }
         if (userDao.insert(user) != 0){
+            /*=====================websocket推送信息的使用======================*/
+            try {
+                webSocketService.sendMessage("新增个人信息成功！");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return new Response();
         }
         return new Response("更改失败!");
@@ -91,5 +107,6 @@ public class UserController {
         List<User> userList = userService.selectPage();
         return new Response(userList);
     }
+
 
 }

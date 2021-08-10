@@ -19,6 +19,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @SpringBootTest
@@ -151,6 +153,10 @@ class MybatisPlusApplicationTests {
         System.out.println("请求服务的json返回参数是:" + result.toString());//请求服务的json返回参数是:{"code":"200","status":"操作成功"}
     }
 
+    @Test
+    void test6(){
+
+    }
 
     // 5 2 8 1 2 19 15 14 10 9
 
