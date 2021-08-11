@@ -1,10 +1,10 @@
 package com.chen.mybatis_plus;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chen.mybatis_plus.dao.UserDao;
 import com.chen.mybatis_plus.model.User;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,15 +15,19 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-
-@SpringBootTest
+/**
+ *  @Author: chenchao
+ *  @Date: 2021/8/11 9:29
+ *  @Description: spring boot 运行测试类时：Error creating bean with name 'serverEndpointExporter' 问题
+ *  原因：websocket是需要依赖tomcat等容器的启动。所以在测试过程中我们要真正的启动一个tomcat作为容器。
+ *  解决方法：在@SpringBootTest注解上添加webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+ */
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MybatisPlusApplicationTests {
     @Resource
     private UserDao userDao;
@@ -60,9 +64,14 @@ class MybatisPlusApplicationTests {
         System.out.println(str2.equals(str3));
     }
 
+    /**
+     *  @Author: chenchao
+     *  @Date: 2021/8/3 10:54
+     *  @Description: 控制输出时间的格式
+     */
     @Test
     void test3(){
-        long millis = System.currentTimeMillis();
+        long millis = System.currentTimeMillis();   //获取系统的时间
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         Date date = new Date(millis);
         String s = new Timestamp(millis).toString();
@@ -81,6 +90,7 @@ class MybatisPlusApplicationTests {
 
     @Test
     void test4(){
+        //MD5以512位分组来处理输入的信息，且每一分组又被划分为16个32位子分组，经过了一系列的处理后，算法的输出由四个32位分组组成，将这四个32位分组级联后将生成一个128位散列值。
         //测试MessageDigest类的加密,该加密是没有解码的,通常是通过比对加密的结果进行比较得出结果
         StringBuilder str = new StringBuilder();
         str.append("测试MD5算法").append("成功");
@@ -112,7 +122,7 @@ class MybatisPlusApplicationTests {
                 //toHexString():以十六进制的无符号整数形式返回一个整数参数的字符串表示形式
                 str.append(Integer.toHexString(i));
             }
-            str.append("你好，我是测试对象是否是引用传值");
+//            str.append("你好，我是测试对象是否是引用传值");
             System.out.println(str);
         } catch (Exception e) {
             System.out.println("执行MD5加密时出现异常:" + e);
@@ -153,9 +163,73 @@ class MybatisPlusApplicationTests {
         System.out.println("请求服务的json返回参数是:" + result.toString());//请求服务的json返回参数是:{"code":"200","status":"操作成功"}
     }
 
+    /**
+     *  @Author: chenchao
+     *  @Date: 2021/8/5 9:15
+     *  @Description: 测试fastJSON中的JsonObject类
+     */
     @Test
     void test6(){
+        //通过原生生成的JSON格式生成
+        JSONObject object = new JSONObject();
+        object.put("name", "张三");
+        object.put("age", 18);
+        object.put("email", "abc@163.com");
+        System.out.println("原生生成的JSON格式生成:" + object.toString());
 
+        //通过hashMap数据结构生成
+        HashMap<String, Object> objectHashMap =  new HashMap<>();
+        objectHashMap.put("name", "张三");
+        objectHashMap.put("age", 18);
+        objectHashMap.put("email", "abc@qq.com");
+        System.out.println("hashMap数据结构生成:" + new JSONObject(objectHashMap).toString());
+
+        //通过实体生成
+        User user = new User();
+        user.setName("张三");
+        user.setAge(18);
+        user.setEmail("abc@qq.com");
+        System.out.println("实体生成Json格式:" + JSON.toJSON(user));  //生成Json格式
+        String jsonString = JSONObject.toJSONString(user);  //对象转成String
+        System.out.println("对象转成String:" + jsonString);
+
+        //Json字符串转换成Json对象
+        String user1 = "{\"name\":\"张三\",\"age\":18,\"email\":\"abc.@qq.com\"}";
+        JSONObject jsonObject = JSONObject.parseObject(user1);
+        System.out.println("Json字符串转换成Json对象:" + jsonObject.toString());
+
+        //list对象转listJson
+        ArrayList<User> users = new ArrayList<>();
+        User user2 = new User();
+        user2.setName("张三");
+        user2.setAge(18);
+        user2.setEmail("abc@qq.com");
+
+        users.add(user2);
+
+        User user3 = new User();
+        user3.setName("李四");
+        user3.setAge(20);
+        user3.setEmail("abc@163.com");
+
+        users.add(user3);
+
+        String string = JSON.toJSON(users).toString();
+        System.out.println("list转Json字符串:" + string);
+
+        JSONArray jsonArray = JSONObject.parseArray(string);
+        System.out.println("json字符串转listJson格式:" + jsonArray);
+
+        //JsonObject转实体对象
+        JSONObject object1 = new JSONObject();
+        object1.put("name", "张三");
+        object1.put("age", 18);
+        object1.put("email", "abc@163.com");
+        User user4 = JSONObject.toJavaObject(object1, User.class);
+        System.out.println(user4);
+        String[] split = jsonString.split(",");
+        System.out.println(jsonString.split(","));
+        System.out.println(split.length);
     }
 
     // 5 2 8 1 2 19 15 14 10 9
