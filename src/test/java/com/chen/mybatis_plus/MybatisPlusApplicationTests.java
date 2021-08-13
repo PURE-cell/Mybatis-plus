@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chen.mybatis_plus.dao.UserDao;
+import com.chen.mybatis_plus.dto.UserDto;
 import com.chen.mybatis_plus.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.*;
@@ -727,7 +729,15 @@ class MybatisPlusApplicationTests {
 
     @Test
     void test8(){
-
+        //BeanUtils.copyProperties(user,userDto)将第一个参数对象拷贝到另一个对象中
+        User user = userDao.selectById(1);
+        UserDto userDto = new UserDto();
+        User user1 = new User();
+        BeanUtils.copyProperties(user,userDto);
+        BeanUtils.copyProperties(userDto,user1);
+        System.out.println(user);//结果：User{id='1', name='Jone', age=18, email='test1@baomidou.com', delete_flag='null'}
+        System.out.println(userDto);//结果：UserDto(name=Jone, age=18, email=test1@baomidou.com, address=null)
+        System.out.println(user1);//结果：User{id='null', name='Jone', age=18, email='test1@baomidou.com', delete_flag='null'}
     }
 
     // 5 2 8 1 2 19 15 14 10 9
