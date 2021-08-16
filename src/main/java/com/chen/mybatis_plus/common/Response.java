@@ -1,5 +1,7 @@
 package com.chen.mybatis_plus.common;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 public class Response<T> implements Serializable {
@@ -7,8 +9,11 @@ public class Response<T> implements Serializable {
     private final static String SUCCESS_STATUS = "操作成功";
     private final static String ERROR_CODE = "200";
 
+    @ApiModelProperty(value = "操作码")
     private String code;
+    @ApiModelProperty(value = "状态")
     private String status;
+    @ApiModelProperty(value = "返回的结果集")
     private T resultMap;
 
     public Response(T result){

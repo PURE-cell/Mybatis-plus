@@ -7,6 +7,9 @@ import com.chen.mybatis_plus.dao.UserDao;
 import com.chen.mybatis_plus.model.User;
 import com.chen.mybatis_plus.service.UserService;
 import com.chen.mybatis_plus.service.impl.WebSocketServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,8 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 @Slf4j
+@Api(description = "用户管理操作")
 public class UserController {
     @Resource
     private UserService userService;
@@ -33,6 +37,7 @@ public class UserController {
     private WebSocketServiceImpl webSocketService;
 
     /*=====================mybatis-plus实现增删查改======================*/
+    @ApiOperation(value = "获取用户列表", notes = "获取用户所有数据")
     @GetMapping("/select")
     public Response<List<User>> select(){
         List<User> userInfo = userService.select();
@@ -52,6 +57,7 @@ public class UserController {
         return new Response<List<User>>(userInfo);
     }
 
+    @ApiOperation(value = "插入用户数据", notes = "将用户数据插入数据库表user中")
     @PostMapping("/insert")
     public Response insert(@RequestBody JSONObject res){
 //        String name = res.getString("name");
@@ -77,6 +83,7 @@ public class UserController {
         return new Response("更改失败!");
     }
 
+    @ApiOperation(value = "更新用户数据", notes = "根据用户Id更新用户数据到数据库表user中")
     @PostMapping("/update")
     public Response update(@RequestBody JSONObject res){
         User user = JSONObject.toJavaObject(res, User.class);
@@ -85,8 +92,9 @@ public class UserController {
         return new Response();
     }
 
+    @ApiOperation(value = "删除用户数据", notes = "")
     @DeleteMapping("/delete")
-    public Response delete(@RequestBody JSONObject res){
+    public Response delete(@ApiParam(value = "需要删除的数据") @RequestBody JSONObject res){
         User user = JSONObject.toJavaObject(res, User.class);
         int i = userService.delete(user);
         if ( i == 1){
@@ -96,12 +104,14 @@ public class UserController {
     }
 
     /*========================条件构造器的使用==========================*/
+    @ApiOperation(value = "条件构造器的使用")
     @GetMapping("/selectWrapper")
     public Response selectWrapper(){
         List<User> userList = userService.selectWrapper();
         return new Response(userList);
     }
 
+    @ApiOperation(value = "分页查询")
     @GetMapping("/selectPage")
     public Response selectPage(){
         List<User> userList = userService.selectPage();

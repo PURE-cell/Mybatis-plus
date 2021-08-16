@@ -740,6 +740,11 @@ class MybatisPlusApplicationTests {
         System.out.println(user1);//结果：User{id='null', name='Jone', age=18, email='test1@baomidou.com', delete_flag='null'}
     }
 
+    @Test
+    void test9(){
+
+    }
+
     // 5 2 8 1 2 19 15 14 10 9
     /**
      * @Author: chenchao

@@ -5,17 +5,29 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @TableName("user")
+@ApiModel(description = "user表")
 public class User extends Model<User> {
+    @ApiModelProperty(hidden = true)    //隐藏
     @TableId("id")
     private String id;
+
+    @ApiModelProperty(value = "姓名")
     @TableField("name")
     private String name;
+
+    @ApiModelProperty(value = "年龄")
     @TableField("age")
     private int age;
+
+    @ApiModelProperty(value = "邮箱")
     @TableField("email")
     private String email;
+
+    @ApiModelProperty(value = "删除标志",hidden = true)
     @TableLogic
     @TableField("delete_flag")
     private String delete_flag;
