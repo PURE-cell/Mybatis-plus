@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class NewTask {
     //定义一个消息队列的名称
-    private static final String QUEEN_NAME = "work";
+    private static final String QUEUE_NAME = "work";
 
     public static void main(String[] args) {
         //开启连接工厂
@@ -29,14 +29,14 @@ public class NewTask {
             Channel channel = connection.createChannel();
             //设置队列参数
             boolean autoAck = true; //消息确认与持久性，消费者发回确认消息，告诉 RabbitMQ 特定消息已被接收、处理，并且 RabbitMQ 可以自由删除它。
-            channel.queueDeclare(QUEEN_NAME, autoAck, false, false, null);
-            //发布消息
+            channel.queueDeclare(QUEUE_NAME, autoAck, false, false, null);
+            //设置发布消息
             String []msg = {"one", "two", "three", "four", "five", "six", "seven", "eight", "night", "ten"};
-            String message = String.join("-", msg);//从控制台编译
+            String message = String.join("-", msg);
             System.out.println(message);
             for (int i = 0; i < 10; i++) {
                 //我们需要将我们的消息标记为持久性 - 通过将MessageProperties（实现BasicProperties）设置为值PERSISTENT_TEXT_PLAIN
-                channel.basicPublish("", QUEEN_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
+                channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
             }
 //            //我们需要将我们的消息标记为持久性 - 通过将MessageProperties（实现BasicProperties）设置为值PERSISTENT_TEXT_PLAIN
 //            channel.basicPublish("", QUEEN_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
