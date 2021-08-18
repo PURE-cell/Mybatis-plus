@@ -34,8 +34,12 @@ public class NewTask {
             String []msg = {"one", "two", "three", "four", "five", "six", "seven", "eight", "night", "ten"};
             String message = String.join("-", msg);//从控制台编译
             System.out.println(message);
-            //我们需要将我们的消息标记为持久性 - 通过将MessageProperties（实现BasicProperties）设置为值PERSISTENT_TEXT_PLAIN
-            channel.basicPublish("", QUEEN_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
+            for (int i = 0; i < 10; i++) {
+                //我们需要将我们的消息标记为持久性 - 通过将MessageProperties（实现BasicProperties）设置为值PERSISTENT_TEXT_PLAIN
+                channel.basicPublish("", QUEEN_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
+            }
+//            //我们需要将我们的消息标记为持久性 - 通过将MessageProperties（实现BasicProperties）设置为值PERSISTENT_TEXT_PLAIN
+//            channel.basicPublish("", QUEEN_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
             //关闭通道
             channel.close();
             //关闭连接

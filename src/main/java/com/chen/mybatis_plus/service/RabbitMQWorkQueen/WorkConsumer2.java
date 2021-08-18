@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
-public class WorkConsumer {
+public class WorkConsumer2 {
     //定义消息队列名称
     private static final String QUEEN_NAME = "work";
 
@@ -53,11 +53,11 @@ public class WorkConsumer {
     private static void doWork(String message) {
         int count = 0;
         for (char ch
-        : message.toCharArray()){
+                : message.toCharArray()){
             //遇到'-'符号耗时1s
             if (ch == '-'){
                 try {
-                    log.info("工人1做这项工作时间：{}秒" , ++count);
+                    log.info("工人做这项工作时间：{}秒" , ++count);
                     Thread.sleep(1000);
                 } catch (InterruptedException e){
                     e.printStackTrace();
