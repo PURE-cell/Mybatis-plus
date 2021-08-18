@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class WorkConsumer {
     //定义消息队列名称
-    private static final String QUEEN_NAME = "work";
+    private static final String QUEUE_NAME = "work";
 
     public static void main(String[] args) {
         //开启连接工厂
@@ -26,7 +26,7 @@ public class WorkConsumer {
             Channel channel = connection.createChannel();
             //设置队列参数
             boolean autoAck = true; //消息确认与持久性，消费者发回确认消息，告诉 RabbitMQ 特定消息已被接收、处理，并且 RabbitMQ 可以自由删除它。
-            channel.queueDeclare(QUEEN_NAME, autoAck, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, autoAck, false, false, null);
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
             channel.basicQos(1);    //公平调度，一次只接受一条未确认的消息
@@ -43,7 +43,7 @@ public class WorkConsumer {
                     channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);//确认消息，设置为false
                 }
             };
-            channel.basicConsume(QUEEN_NAME, false, deliverCallback, consumerTag -> {});
+            channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> {});
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         }
