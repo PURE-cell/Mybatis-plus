@@ -57,7 +57,7 @@ public class UserController {
         return new Response<List<User>>(userInfo);
     }
 
-    @ApiOperation(value = "插入用户数据", notes = "将用户数据插入数据库表user中")
+    @ApiOperation(value = "插入用户数据", notes = "将用户数据插入数据库表user中，websocket推送消息")
     @PostMapping("/insert")
     public Response insert(@RequestBody JSONObject res){
 //        String name = res.getString("name");

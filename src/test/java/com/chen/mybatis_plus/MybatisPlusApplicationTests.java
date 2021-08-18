@@ -93,6 +93,16 @@ class MybatisPlusApplicationTests {
         str1 = str1.trim();
         System.out.println(str1.equals(str2));
         System.out.println(str2.equals(str3));
+        /*=====================测试String.join()连接字符串======================*/
+        String str = String.join("-", "one", "two", "three");
+        System.out.println(str);//输出结果：one-two-three
+        List <String> list = new ArrayList <String> ();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        System.out.println(String.join("-", list));//输出结果：one-two-three
+        String[] array = { "one", "two", "three" };
+        System.out.println(String.join("-", array));//输出结果：one-two-three
     }
 
     /**
@@ -119,6 +129,11 @@ class MybatisPlusApplicationTests {
         System.out.println(stringBuilder);
     }
 
+    /**
+     *  @Author: chenchao
+     *  @Date: 2021/8/13 9:07
+     *  @Description: 测试MD5算法加密
+     */
     @Test
     void test4(){
         //MD5以512位分组来处理输入的信息，且每一分组又被划分为16个32位子分组，经过了一系列的处理后，算法的输出由四个32位分组组成，将这四个32位分组级联后将生成一个128位散列值。
@@ -264,6 +279,11 @@ class MybatisPlusApplicationTests {
         System.out.println(split.length);
     }
 
+    /**
+     *  @Author: chenchao
+     *  @Date: 2021/8/15 9:06
+     *  @Description: Redis的使用
+     */
     @Test
     void test7(){
         /*=====================Redis的String的操作======================*/
