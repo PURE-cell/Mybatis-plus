@@ -7,6 +7,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.chen.mybatis_plus.dao.UserDao;
 import com.chen.mybatis_plus.dto.UserDto;
 import com.chen.mybatis_plus.model.User;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
@@ -30,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  *  @Author: chenchao
@@ -740,9 +745,29 @@ class MybatisPlusApplicationTests {
         System.out.println(user1);//结果：User{id='null', name='Jone', age=18, email='test1@baomidou.com', delete_flag='null'}
     }
 
+    /**
+     *  @Author: chenchao
+     *  @Date: 2021/8/17 16:49
+     *  @Description: RabbitMQ生产者
+     */
     @Test
-    void test9(){
-
+    void test9() throws IOException, TimeoutException {
+        final String QUEEN_NAME = "Hello World";
+        String[] message = String.valueOf(userDao.selectList(null)).split("[\\[|{|,|}|\\]]");
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");//设置主机名或IP
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        channel.queueDeclare(QUEEN_NAME, false, false, false, null);
+        for (String msg :
+                message) {
+            if (StringUtils.isNotBlank(msg) && !msg.equals("User")){
+                channel.basicPublish("", QUEEN_NAME, null, msg.getBytes());
+                log.info("发布的消息：{}", msg);
+            }
+        }
+        channel.close();
+        connection.close();
     }
 
     // 5 2 8 1 2 19 15 14 10 9
