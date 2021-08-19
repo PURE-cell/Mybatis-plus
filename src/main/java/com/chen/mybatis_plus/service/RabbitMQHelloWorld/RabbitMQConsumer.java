@@ -1,4 +1,4 @@
-package com.chen.mybatis_plus.service.impl;
+package com.chen.mybatis_plus.service.RabbitMQHelloWorld;
 
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
